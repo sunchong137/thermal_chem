@@ -1,21 +1,25 @@
-Finite Temperature Exact Diagonalization 
-========================================
+Finite-Temperature Quantum Chemistry Methods
+============================================
 
-Using exact diagonalization to solve the finite temperature problems of both model and molecular systems. 
+A collection of finite-temperature quantum chemistry solvers.
 
-Based on grand canonical ensemble.
+**Authors**:
 
-Contact
--------
+    Chong Sun <sunchong137@gmail.com>
 
-Chong Sun <chongs0419@gmail.com>
+## Dependency
+All dependencies can be installed with `pip`.
+- [pyscf](https://pyscf.org)
+- python3
+- h5py
 
-Dependency
-----------
+#### Optional
 
-*[pyscf] (https://github.com/pyscf/pyscf) 
-*[python3]
+- [block2](https://block2.readthedocs.io/en/latest/) for DMRG solvers.
 
+## Features
+
+- Finite-temperature FCI solver.
 
 Set up
 ------
