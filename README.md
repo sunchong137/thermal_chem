@@ -20,6 +20,7 @@ All dependencies can be installed with `pip`.
 ## Features
 
 - Finite-temperature FCI solver.
+- Finite-temperature DMRG solver, ancilla approach.
 
 Set up
 ------

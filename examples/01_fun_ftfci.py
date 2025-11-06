@@ -7,7 +7,7 @@ norb = 4
 nelec = norb
 h1e = np.zeros((norb,norb))
 h2e = np.zeros((norb,norb,norb,norb))
-T = 0.01
+T = 10
 u = 4
 mu= u/2
 #mu= 0.0
@@ -20,8 +20,10 @@ for i in range(norb):
 
 ftfci_solver = ftfci.FTFCI(restricted=True)
 h1e_uhf = (h1e,h1e)
-h2e_uhf = (h2e*0, h2e, h2e*0)
-rdm1, e = ftfci_solver.kernel(h1e_uhf, h2e_uhf, norb, nelec, beta=1/T, mu_gc=mu)
+h2e_uhf = (h2e, h2e, h2e)
+rdm1, e = ftfci_solver.kernel(h1e_uhf, h2e_uhf, norb, nelec, beta=1/T, mu_gc=None)
+print(rdm1)
+exit()
 # rdm1_p, e_p = ftfci_solver.kernel_parallel(h1e_uhf, h2e_uhf, norb, nelec, beta=1/T, mu=mu)
 assert abs(e/norb - (-0.5256871208654883)) < 1e-5
 assert np.allclose(np.diag(rdm1[0]), np.ones(4)*0.5)
