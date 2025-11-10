@@ -771,11 +771,11 @@ class FTFCI:
         self.rdm1 = None
         
         if self.clean_scratch:
-            import shutil
-            shutil.rmtree(self.saved_file)
+            os.remove(self.saved_file)
+            # import shutil
+            # shutil.rmtree(self.saved_file)
 
 ################# move to helpers ################# 
-
 def _fermi_dirac(h1e, norb, nelec, beta, mu_gc, restricted=False, bmax=1e3):
     ''' 
     Non-interacting case.

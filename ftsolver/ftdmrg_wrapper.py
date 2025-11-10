@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-Finite temperature DMRG solver. (ancilla implementation)
+Finite temperature DMRG wrapper, not the DMET solver. (ancilla implementation)
 Dependency: block2 `pip install block2`
 
 Author:
@@ -14,11 +14,13 @@ import sys
 from pyblock2 import ftdmrg
 from block2 import TETypes
 import ft_helpers
+from pyscf import ao2mo
 
 
 
 class FTDMRGSolver:
     def __init__(self, restricted=False, beta=np.inf, mu_gc=None,
+                 solve_mu=True,
                  restart=False, bmax=1e3, tau=0.1, bond_dims=100,
                  max_memory = 4000, tol=1e-8, max_cycle=20, 
                  scratch=None, max_bond_dim=1000, start_bond_dim=None,
@@ -47,6 +49,7 @@ class FTDMRGSolver:
         self.bmax = bmax
         self.tau = tau
         self.max_mu_cycle = max_mu_cycle
+        self.solve_mu = solve_mu
         
         
         self.cisolver = None
@@ -74,6 +77,7 @@ class FTDMRGSolver:
         # make scratch directory
         if self.scratch is None:
             self.scratch = ft_helpers.find_scratch_path() + "/ftdmrg_scratch/"
+            print("Using scratch dir: %s"%self.scratch)
         if not os.path.exists(self.scratch):
             os.mkdir(self.scratch)
 
@@ -143,18 +147,31 @@ class FTDMRGSolver:
                 h1e = (h1e, h1e)
             else:
                 h1e = (h1e[0], h1e[1]) # for uhf, DMRG only accepts tuple, not list or numpy array
+            h2e = np.asarray(h2e) 
 
+            if h2e.ndim == 2:
+                h2e = ao2mo.restore(1, h2e, norb)
+                h2e = (h2e, h2e, h2e)
+            elif h2e.ndim == 3:
+                h2e = (ao2mo.restore(1, h2e[0], norb),
+                        ao2mo.restore(1, h2e[1], norb),
+                        ao2mo.restore(1, h2e[2], norb))
+            elif h2e.ndim == 4:
+                h2e = (h2e, h2e, h2e)
+            else:
+                h2e = (h2e[0], h2e[1], h2e[2]) 
 
         print("FTDMRG solver run.")
         print("restricted = %s"%self.restricted)
         print("norb = %d"%norb)
-        print("nelec = %d", nelec)
+        print("nelec = %d"%nelec)
         print("beta = %0.2f"%beta)
 
         # use mean-field approximated chemical potential
-        mu_gc = ft_helpers.get_mu_gc_mf(np.asarray(h1e), np.asarray(h2e), norb, nelec, spin, beta, 
+        if self.solve_mu:
+            mu_gc = ft_helpers.get_mu_gc_mf(np.asarray(h1e), np.asarray(h2e), norb, nelec, spin, beta, 
                                         mu0=mu_gc, max_cycle=self.max_mu_cycle)
-        self.mu_gc = mu_gc
+            self.mu_gc = mu_gc
 
         if isinstance(self.bond_dims, int):
             bond_dim = self.bond_dims
@@ -168,7 +185,9 @@ class FTDMRGSolver:
         self.reorder_idx = np.array(list(range(norb)), dtype=int)
 
 
-        n_steps = int(round(beta/(2*tau)) + 0.1)  # ancilla method only evolves to beta/2       
+        n_steps = round(beta/(2*tau))
+        if not np.isclose(n_steps, beta/(2*tau), atol=1e-6):
+            raise ValueError("beta/(2*tau) is not an integer, please adjust tau or beta!")   
         # clean up the existing cisolver
         if self.cisolver is not None:
             del self.cisolver
@@ -182,8 +201,8 @@ class FTDMRGSolver:
         cisolver.generate_initial_mps(bond_dim)
 
         # use more sweeps for the first beta step, after the first beta step, use 2 sweeps (or 1 sweep) for each beta step
-        cisolver.imaginary_time_evolution(1, tau, mu_gc, [bond_dim], TETypes.RK4, n_sub_sweeps=sub_sweep_schedule[0])
-        cisolver.imaginary_time_evolution(n_steps-1, tau, mu_gc, [bond_dim], TETypes.RK4, n_sub_sweeps=sub_sweep_schedule[1], cont=True) # cont=True to start from last step
+        cisolver.imaginary_time_evolution(1, tau, self.mu_gc, [bond_dim], TETypes.RK4, n_sub_sweeps=sub_sweep_schedule[0])
+        cisolver.imaginary_time_evolution(n_steps-1, tau,self.mu_gc, [bond_dim], TETypes.RK4, n_sub_sweeps=sub_sweep_schedule[1], cont=True) # cont=True to start from last step
 
         rdm1 = np.asarray(cisolver.get_one_pdm(self.reorder_idx))
         self.rdm1 = rdm1
@@ -251,5 +270,6 @@ class FTDMRGSolver:
         if self.cisolver is not None:
             del self.cisolver
             self.cisolver = None
-        # shutil.rmtree(self.scratch)
+        if self.scratch is not None:
+             shutil.rmtree(self.scratch)
 
