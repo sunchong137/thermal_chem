@@ -15,7 +15,7 @@ import os
 import sys
 import h5py
 
-class FTFCI:
+class gFTFCI:
     ''' 
     FT-FCI solver.
     '''

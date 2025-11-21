@@ -20,8 +20,11 @@ All dependencies can be installed with `pip`.
 ## Features
 
 - Finite-temperature FCI solver.
-- Finite-temperature DMRG solver, ancilla approach.
-
+    - Grand canonical ensemble: `gftfci.py`
+    - Canonical ensemble: `cftfci.py`
+- Finite-temperature DMRG solver.
+    - Grand canonical, ancilla approach, `ftdmrg_wrapper.py`
+    - Canonical ensemble of low-energy states, `cdmrg_wrapper.py`
 Set up
 ------
 Add the path to README to your $PYTHONPATH. 

@@ -1,7 +1,7 @@
 import numpy as np
 import sys 
 sys.path.append("../ftsolver/")
-import ftfci
+import gftfci
 
 norb = 4
 nelec = norb
@@ -18,7 +18,7 @@ for i in range(norb):
 for i in range(norb):
     h2e[i,i,i,i] = u
 
-ftfci_solver = ftfci.FTFCI(restricted=True)
+ftfci_solver = gftfci.gFTFCI(restricted=True)
 h1e_uhf = (h1e,h1e)
 h2e_uhf = (h2e, h2e, h2e)
 rdm1, e = ftfci_solver.kernel(h1e_uhf, h2e_uhf, norb, nelec, beta=1/T, mu_gc=None)
