@@ -14,7 +14,7 @@ import sys
 import uuid
 from pyblock2 import ftdmrg
 from block2 import TETypes
-import ft_helpers
+from thermal_chem import utils
 from pyscf import ao2mo
 from pyblock2.driver.core import DMRGDriver, SymmetryTypes
 
@@ -81,7 +81,7 @@ class cDMRGSolver:
             self.symm_type = SymmetryTypes.SZ
 
         if scratch is None:
-            scratch = ft_helpers.find_scratch_path()
+            scratch = utils.find_scratch_path()
         self.scratch = scratch + "/ftdmrg_scratch/" + uuid.uuid4().hex[:8] + "/"
         print("Using scratch dir: %s"%self.scratch)
         if not os.path.exists(self.scratch):

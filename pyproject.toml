@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "thermal_chem"
+version = "0.1.0"
+description = "Tools for thermal chemistry calculations"
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [
+    { name="Chong Sun", email="sunchong137@gmail.com" }
+]
+
+dependencies = [
+    "pyscf",
+    "block2",
+    "h5py"
+]
+
+[project.urls]
+Homepage = "https://github.com/sunchong137/thermal_chem"
+Source = "https://github.com/sunchong137/thermal_chem"
+

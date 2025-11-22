@@ -13,7 +13,7 @@ import numpy as np
 import sys
 from pyblock2 import ftdmrg
 from block2 import TETypes
-import ft_helpers
+from thermal_chem import utils
 from pyscf import ao2mo
 
 
@@ -76,7 +76,7 @@ class FTDMRGSolver:
  
         # make scratch directory
         if self.scratch is None:
-            self.scratch = ft_helpers.find_scratch_path() + "/ftdmrg_scratch/"
+            self.scratch = utils.find_scratch_path() + "/ftdmrg_scratch/"
             print("Using scratch dir: %s"%self.scratch)
         if not os.path.exists(self.scratch):
             os.mkdir(self.scratch)

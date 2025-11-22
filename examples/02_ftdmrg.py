@@ -1,7 +1,6 @@
 import numpy as np
 import sys 
-sys.path.append("../ftsolver/")
-import ftdmrg_wrapper as ftdmrg
+from thermal_chem import ftdmrg_wrapper as ftdmrg
 
 norb = 4
 nelec = norb

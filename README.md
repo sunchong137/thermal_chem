@@ -17,6 +17,14 @@ All dependencies can be installed with `pip`.
 
 - [block2](https://block2.readthedocs.io/en/latest/) for DMRG solvers.
 
+## Install
+
+`git clone git@github.com:sunchong137/thermal_chem.git .`
+
+`cd thermal_chem`
+
+`pip install -e .`
+
 ## Features
 
 - Finite-temperature FCI solver.
@@ -25,7 +33,5 @@ All dependencies can be installed with `pip`.
 - Finite-temperature DMRG solver.
     - Grand canonical, ancilla approach, `ftdmrg_wrapper.py`
     - Canonical ensemble of low-energy states, `cdmrg_wrapper.py`
-Set up
-------
-Add the path to README to your $PYTHONPATH. 
+
 
