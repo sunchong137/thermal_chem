@@ -19,18 +19,19 @@ All dependencies can be installed with `pip`.
 
 ## Install
 
-    git clone git@github.com:sunchong137/thermal_chem.git .
+```bash
+git clone git@github.com:sunchong137/thermal_chem.git
+cd thermal_chem
+pip install -e .
+```
 
-    cd thermal_chem
-
-    pip install -e .
 
 ## Features
 
-- Finite-temperature FCI solver.
+- **Finite-temperature FCI solver.**
     - Grand canonical ensemble: `gftfci.py`
     - Canonical ensemble: `cftfci.py`
-- Finite-temperature DMRG solver.
+- **Finite-temperature DMRG solver.**
     - Grand canonical, ancilla approach, `ftdmrg_wrapper.py`
     - Canonical ensemble of low-energy states, `cdmrg_wrapper.py`
 
