@@ -19,11 +19,11 @@ All dependencies can be installed with `pip`.
 
 ## Install
 
-`git clone git@github.com:sunchong137/thermal_chem.git .`
+    `git clone git@github.com:sunchong137/thermal_chem.git .`
 
-`cd thermal_chem`
+    `cd thermal_chem`
 
-`pip install -e .`
+    `pip install -e .`
 
 ## Features
 
