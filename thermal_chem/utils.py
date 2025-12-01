@@ -38,7 +38,8 @@ def get_mu_gc_mf(h1e, h2e, norb, nelec, spin, beta=np.inf, mu0=None,
     else:
         mf._eri = ao2mo.restore(1, h2e, norb)
         
-    
+    if beta < 1e3:
+        mf = scf.addons.smearing_(mf, sigma=1./beta, method='fermi')
     mf.kernel()
     mo_energy = mf.mo_energy
 
@@ -89,7 +90,7 @@ def find_scratch_path(base='/scratch/'):
         base: assuming all scratch directorys are in `/scratch/`
     '''
     if not os.path.isdir(base):
-        print(f"{base} does not exist. Using './'")
+        # print(f"{base} does not exist. Using './'")
         return "./"
     
     for name in sorted(os.listdir(base)):
@@ -103,5 +104,5 @@ def find_scratch_path(base='/scratch/'):
                 # e.g., PermissionError or OSError
                 print(f"Cannot access {path}: {e}")
                 continue        
-    print(f"No accessible directory found under {base}. Using './'")
+    # print(f"No accessible directory found under {base}. Using './'")
     return "./"

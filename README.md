@@ -36,3 +36,18 @@ pip install -e .
     - Canonical ensemble of low-energy states, `cdmrg_wrapper.py`
 
 
+## Citing Thermal Chem
+If you are using this package, we appreciate you cite the following work that involved development of this package.
+
+```
+@article{sun2020ftdmet,
+  author  = {Sun, Chong and Ray, Ushinsh and Cui, Zhi-Hao and Stoudenmire, Miles and Ferrero, Michel and Chan, Garnet Kin-Lic},
+  title   = {Finite-temperature density matrix embedding theory},
+  journal = {Physical Review B},
+  year    = {2020},
+  volume  = {101},
+  number  = {7},
+  pages   = {075131},
+  doi = {https://doi.org/10.1103/PhysRevB.101.075131}
+}
+```
