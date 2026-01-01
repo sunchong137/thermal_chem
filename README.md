@@ -51,3 +51,6 @@ If you are using this package, we appreciate you cite the following work that in
   doi = {https://doi.org/10.1103/PhysRevB.101.075131}
 }
 ```
+
+## Acknowledgement
+We thank Huanchen Zhai for helpful discussions on the Block2 package.
